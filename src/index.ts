@@ -36,7 +36,10 @@ app.post('/', async (req, res) => {
     case 'raffle:active': {
       const { raffle } = req.body.data;
 
-      if (!TEAM_ID || raffle.teamId === TEAM_ID) {
+      if (
+        (!TEAM_ID || raffle.teamId === TEAM_ID) &&
+        raffle.visibility !== 'private'
+      ) {
         console.log(
           `Raffle started for teamId=${raffle.teamId}. Sending tweet`,
           raffle.slug
