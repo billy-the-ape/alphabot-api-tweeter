@@ -1,14 +1,17 @@
-import crypto from 'crypto';
 import { config } from 'dotenv-flow';
-import express from 'express';
-
 config();
+
+import crypto from 'crypto';
+import express from 'express';
+import { sendRaffleTweet } from './tweet.js';
 
 const app = express();
 
 app.use(express.json());
 
-const port = process.env.PORT || 8080
+const PORT = process.env.PORT || 8080;
+
+const TEAM_ID = process.env.ALPHABOT_TEAM_ID;
 
 app.post('/', async (req, res) => {
   // Always respond 200
@@ -22,36 +25,31 @@ app.post('/', async (req, res) => {
 
   if (hashToCheck !== req.body.hash) {
     // Invalid hash! Do not trust this request!
-    console.warn('Invalid hash found! Request IP address:', req.socket.remoteAddress);
+    console.warn(
+      'Invalid hash found! Request IP address:',
+      req.socket.remoteAddress
+    );
     return;
   }
-  
-  console.log(`===== ${req.body.event} =====`);
-  console.log(JSON.stringify(req.body, null, 2))
-  console.log(`==== /${req.body.event} =====`);
 
   switch (req.body.event) {
-    // Add your own logic based on event types
-    // https://api.alphabot.app/v1#tag/Webhooks
     case 'raffle:active': {
-      console.log('Raffle started!');
-      break;
-    }
-    case 'raffle:edited': {
-      console.log('Raffle edited!');
-      break;
-    }
-    case 'raffle:deleted': {
-      console.log('Raffle deleted!');
-      break;
-    }
-    case 'raffle:ended': {
-      console.log('Raffle ended!');
+      const { raffle } = req.body.data;
+
+      if (!TEAM_ID || raffle.teamId === TEAM_ID) {
+        console.log(
+          `Raffle started for teamId=${raffle.teamId}. Sending tweet`,
+          raffle.slug
+        );
+        await sendRaffleTweet(raffle);
+      }
       break;
     }
   }
 });
 
-app.listen(port);
+app.listen(PORT);
 
-console.info(`Alphabot API Webhook example running on port ${port}`);
+console.info(
+  `Alphabot API Webhook Tweeter running on port ${PORT} :: Sending tweets for raffles posted by teamId=${TEAM_ID}`
+);
