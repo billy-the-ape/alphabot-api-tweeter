@@ -13,8 +13,8 @@ Install [ngrok](https://ngrok.com/) or your own local web service engine to
 1. Copy `.env.local.example` and paste, removing `.example` from the file name
 2. Populate the `ALPHABOT_API_KEY` in the new file with your value from your [Alphabot profile](https://alphabot.app/#profile-developer) or [Team Page](https://alphabot.app/team#developer)
 3. Copy your team's ID from the end of the [Team Page](https://alphabot.app/team) URL. It will look like `6259d10fd0728949c4ac0520`. Paste this into the `ALPHABOT_TEAM_ID` value.
-4. Run `ngrok http 8080` in another terminal, after setting up a free [ngrok](https://ngrok.com/) account (or your choice of localhost tunneling services) to make your webhook a public URL on the internet.
-5. Copy the Forwarding url (should end with .ngrok-free.app) and paste it into your Webhook url in your [Alphabot profile](https://alphabot.app/#profile-developer)
+4. Run `ngrok http 8080` in another terminal, after setting up a free [ngrok](https://ngrok.com/) account (or your choice of localhost tunneling services) to make your webhook a public URL on the internet. (Ignore this step if you're running at render.com, vercel, heroku, etc)
+5. Copy the Forwarding url (should end with .ngrok-free.app - or your public url if running in the cloud) and paste it into your Webhook url in your [Alphabot profile](https://alphabot.app/#profile-developer)
 
 ## Setup Twitter API
 
