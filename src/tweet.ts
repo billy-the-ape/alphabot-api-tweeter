@@ -38,7 +38,7 @@ export const sendRaffleTweet = async (raffle: any) => {
     .replace('https://twitter.com/', '@');
 
   await client.v2.tweet(
-    `New Alphabot ${raffle.type} posted${
+    `New #Alphabot ${raffle.type} posted${
       handle ? ` with ${handle}` : ''
     }\n\n✨ ${raffle.name} ✨\n\n🏆 ${
       raffle.winnerCount
