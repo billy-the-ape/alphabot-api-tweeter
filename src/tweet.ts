@@ -37,15 +37,20 @@ export const sendRaffleTweet = async (raffle: any) => {
     .split('?')[0]
     .replace('https://twitter.com/', '@');
 
-  await client.v2.tweet(
-    `New #Alphabot ${raffle.type} posted${
-      handle ? ` with ${handle}` : ''
-    }\n\n✨ ${raffle.name} ✨\n\n🏆 ${
-      raffle.winnerCount
-    } winners\n⏰ Ends ${getDateDifference(
-      raffle
-    )}\n\nTo enter and get more details, click below 👇 https://alphabot.app/${
-      raffle.slug
-    }`
-  );
+  try {
+    await client.v2.tweet(
+      `New #Alphabot ${raffle.type} posted${
+        handle ? ` with ${handle}` : ''
+      }\n\n✨ ${raffle.name} ✨\n\n🏆 ${
+        raffle.winnerCount
+      } winners\n⏰ Ends ${getDateDifference(
+        raffle
+      )}\n\nTo enter and get more details, click below 👇 https://alphabot.app/${
+        raffle.slug
+      }`
+    );
+  } catch (e: any) {
+    // Don't crash if twitter API throws error
+    console.error(e);
+  }
 };
